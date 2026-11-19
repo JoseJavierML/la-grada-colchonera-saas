@@ -33,11 +33,11 @@ Es el proyecto individual de **Procesos de Ingeniería del Software (curso 2026-
 | **Aplicación desplegada** | https://la-grada-colchonera-1081564062572.europe-southwest1.run.app (Google Cloud Run) |
 | **Sprint 1** (29/09 – 27/10/2026) | Hitos 1, 2, 3 y 4 del enunciado: registro y acceso locales, roles y administración, persistencia, confirmación por correo, inicio de sesión con Google y manejo de errores. 19 PBIs, todos hechos |
 | **Sprint 2** (23/10 – 29/10/2026) | La lógica del juego: partida *survivor*, jugadores y entrenadores, armas, rivales, jefes, mundo procedural, club guardado en el servidor (contratos, entrenamiento, ranking), combinaciones y ultras, logros, música y pantalla de fin. 29 PBIs, todos hechos |
-| **Gestión (DoneTonic)** | [`docs/gestion/README.md`](docs/gestion/README.md): backlog de los dos sprints, historias de usuario, trazabilidad tarea → PR, evolución y capturas |
+| **Gestión (DoneTonic)** | [`docs/sprint-1.md`](docs/sprint-1.md) y [`docs/sprint-2.md`](docs/sprint-2.md): backlog de los dos sprints, historias de usuario, trazabilidad tarea → PR, evolución, capturas y retrospectivas |
 | **Política de privacidad** | https://la-grada-colchonera-1081564062572.europe-southwest1.run.app/privacidad.html (necesaria para publicar la aplicación de Google) |
 | **Acceso de administrador** | Ver [Acceso como administrador para la revisión](#acceso-como-administrador-para-la-revisión). Las credenciales se envían junto con la entrega |
-| **Revisión requisito a requisito** | [`docs/revision-entrega.md`](docs/revision-entrega.md) |
-| **Documentación técnica completa** | [`docs/documentacion-tecnica.md`](docs/documentacion-tecnica.md) (base para la memoria, con diagramas de secuencia) |
+| **Revisión requisito a requisito** | [`docs/requisitos.md`](docs/requisitos.md) y [revisión frente al enunciado](docs/sprint-1.md#revisión-de-la-entrega-frente-al-enunciado) |
+| **Documentación (bundle `docs/`)** | [`docs/index.md`](docs/index.md): arquitectura con diagramas de secuencia, requisitos, decisiones, procesos, sprints, juego y cronología (base para la memoria) |
 
 ## Enlaces rápidos
 
@@ -47,9 +47,11 @@ Es el proyecto individual de **Procesos de Ingeniería del Software (curso 2026-
 | Entregas por hito (releases) | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) · [hito-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-2) · [hito-3](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-3) · [hito-4](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-4) · [sprint-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/sprint-1) · [sprint-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/sprint-2) |
 | Pull requests (uno por tarea y uno por cierre de hito) | [VelaElDios/la-grada-colchonera-saas/pulls](https://github.com/VelaElDios/la-grada-colchonera-saas/pulls?q=is%3Apr+is%3Aclosed+sort%3Acreated-asc) |
 | Integración continua (GitHub Actions) | [Ejecuciones del workflow *CI*](https://github.com/VelaElDios/la-grada-colchonera-saas/actions/workflows/ci.yml) |
-| Gestión del proyecto (DoneTonic: PBIs, tareas, sprints y gráficas) | [`docs/gestion/README.md`](docs/gestion/README.md) |
-| Revisión de la entrega frente al enunciado | [`docs/revision-entrega.md`](docs/revision-entrega.md) |
-| Configuración del Hito 4 (correo y Google) | [`docs/hito4-configuracion.md`](docs/hito4-configuracion.md) |
+| Gestión del proyecto (DoneTonic: PBIs, tareas, sprints y gráficas) | [`docs/sprint-1.md`](docs/sprint-1.md) · [`docs/sprint-2.md`](docs/sprint-2.md) |
+| Revisión de la entrega frente al enunciado | [`docs/sprint-1.md`](docs/sprint-1.md#revisión-de-la-entrega-frente-al-enunciado) |
+| Configuración del Hito 4 (correo y Google) | [`docs/procesos.md`](docs/procesos.md#configuración-de-los-servicios-externos-google-y-correo) |
+| Decisiones del proyecto (D-01 a D-23) | [`docs/decisiones.md`](docs/decisiones.md) |
+| Cronología de PRs y cambios | [`docs/log.md`](docs/log.md) |
 | Memoria del proyecto (LuaLaTeX) | [`memoria/`](memoria/README.md) |
 
 ## Capturas del Sprint 1 (Hitos 1–4)
@@ -237,12 +239,12 @@ La primera entrega se limitó a los Hitos 1–3. El Hito 4 (P15 OAuth, P16 confi
 | **P16 · Confirmación por correo** (T23, T24) | Al registrarse con email y contraseña la cuenta queda `pending` y se envía un correo con un enlace firmado (HMAC-SHA256, caduca a las 24 h). `GET /api/auth/confirm` la activa. Si el correo falla la cuenta se crea igualmente y se puede pedir otro (`POST /api/auth/resend-confirmation`, que responde igual exista o no la cuenta). El login de una cuenta pendiente devuelve `403 ACCOUNT_PENDING` y la interfaz ofrece reenviar el correo. | `src/integrations/mailer.js`, `src/services/tokenSigner.js`, `src/services/accountConfirmationService.js` |
 | **P15 · Inicio de sesión con Google** (T22) | OAuth 2.0 «authorization code»: `/api/auth/google` manda al usuario a Google con un `state` aleatorio guardado en su sesión; `/api/auth/google/callback` comprueba el `state` (anti-CSRF, de un solo uso), cambia el código por el email **en el servidor** (el `client_secret` nunca llega al navegador) y abre sesión. Si no existía la cuenta se crea ya activa (`authProvider: google`); una cuenta local pendiente queda confirmada; si la cuenta se había eliminado, se crea una nueva (el email queda libre tras la baja). Sin las variables de Google, el botón no aparece. | `src/integrations/googleOAuth.js`, `userService.loginWithOAuth`, `public/js/ui/google.js` |
 | **P17 · Manejo de errores** | Toda la interfaz traduce los errores a avisos legibles y los registra en la consola; hay estados de carga, vacío y error con reintento, timeout de 15 s en las peticiones, captura global de promesas rechazadas, y las redirecciones de OAuth y de confirmación vuelven a la web con un aviso en lugar de mostrar JSON. | `public/js/ui/componentes.js`, `public/js/ui.js`, `src/api/errorHandler.js` |
-| **Secretos y despliegue** (T25) | El workflow de despliegue entrega a Cloud Run los secretos `smtp-url`, `mail-from`, `google-client-id` y `google-client-secret`. Un script de Cloud Shell los crea en Secret Manager y da acceso a la cuenta de servicio. | `.github/workflows/deploy-cloud-run.yml`, `scripts/gcp/configurar-hito4.sh`, [`docs/hito4-configuracion.md`](docs/hito4-configuracion.md) |
+| **Secretos y despliegue** (T25) | El workflow de despliegue entrega a Cloud Run los secretos `smtp-url`, `mail-from`, `google-client-id` y `google-client-secret`. Un script de Cloud Shell los crea en Secret Manager y da acceso a la cuenta de servicio. | `.github/workflows/deploy-cloud-run.yml`, `scripts/gcp/configurar-hito4.sh`, [`docs/procesos.md`](docs/procesos.md#configuración-de-los-servicios-externos-google-y-correo) |
 | **Política de privacidad** (T26) | Página pública que explica qué datos se guardan, para qué y cómo borrarlos. Google la exige para publicar la aplicación de inicio de sesión. | [`public/privacidad.html`](public/privacidad.html) |
 
 ### Sprint 2: la lógica del juego
 
-Cerrado el Sprint 1, el profesor fijó que el **Sprint 2 es la lógica del juego**. El backlog tiene 29 PBIs (P20–P48) con 50 tareas (T33–T82), etiquetados por fase; el detalle con las historias de usuario está en [`docs/gestion/README.md`](docs/gestion/README.md#sprint-2-la-lógica-del-juego).
+Cerrado el Sprint 1, el profesor fijó que el **Sprint 2 es la lógica del juego**. El backlog tiene 29 PBIs (P20–P48) con 50 tareas (T33–T82), etiquetados por fase; el detalle con las historias de usuario está en [`docs/sprint-2.md`](docs/sprint-2.md).
 
 | Etiqueta (fase) | Contenido | PBIs (DoneTonic) | PRs |
 |---|---|---|---|
@@ -254,7 +256,7 @@ Cerrado el Sprint 1, el profesor fijó que el **Sprint 2 es la lógica del juego
 | **Fase 6 · Logros y sonido** | Logros con historia y equipaciones, pantalla de fin con estadísticas, música chiptune y la grada, muñecos con más detalle y jefes más duros | P42–P46 · T69–T76 | [#54](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/54) |
 | **Calidad** | Errores corregidos (el juego no cargaba, el primer reenvío del correo se perdía, no se podía volver con Google tras la baja), documentación y gestión del sprint | P47–P48 · T77–T82 | [#51](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/51), [#55](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/55), [#56](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/56) y este PR |
 
-**Requisitos funcionales del Sprint 2** (la tabla completa, con dónde se cumple cada uno y sus pruebas, está en la [documentación técnica](docs/documentacion-tecnica.md#32-requisitos-funcionales-del-juego-sprint-2)):
+**Requisitos funcionales del Sprint 2** (la tabla completa, con dónde se cumple cada uno y sus pruebas, está en la [documentación de requisitos](docs/requisitos.md#requisitos-funcionales-del-juego-sprint-2)):
 
 | Id | Requisito | PBI |
 |---|---|---|
@@ -428,7 +430,7 @@ sequenceDiagram
     end
 ```
 
-Hay más diagramas (inicio de sesión local, baja, partida del juego, fichajes y despliegue) en [`docs/documentacion-tecnica.md`](docs/documentacion-tecnica.md).
+Hay más diagramas (inicio de sesión local, baja, partida del juego, fichajes y despliegue) en [`docs/arquitectura.md`](docs/arquitectura.md).
 
 ## Tecnologías
 
@@ -477,7 +479,7 @@ public/
   js/api.js            Cliente de comunicación con la API (único sitio con fetch, timeout de 15 s)
   js/game/             El juego: simulación pura, dibujo en canvas, HUD, sonido, logros y club
 tests/                 322 pruebas automatizadas (unitarias, de API, de base de datos y del juego)
-docs/                  Capturas, gestión, configuración del Hito 4, revisión de la entrega y documentación técnica
+docs/                  Bundle documental: index, log, arquitectura, requisitos, decisiones, procesos, sprints, juego y capturas
 memoria/               Memoria del proyecto en LuaLaTeX
 scripts/               Preparación de Google Cloud y modo pruebas del juego
 Dockerfile             Imagen de la aplicación (Cloud Run)
@@ -678,7 +680,7 @@ flowchart LR
 ```
 
 - **Base de datos:** PostgreSQL en Neon (región Frankfurt). Al arrancar, la aplicación aplica las migraciones y crea el primer administrador.
-- **Secretos del Hito 4:** `scripts/gcp/configurar-hito4.sh` guarda en Secret Manager el SMTP (`smtp-url`, `mail-from`) y el cliente de Google (`google-client-id`, `google-client-secret`); el workflow los entrega a Cloud Run. Pasos completos en [`docs/hito4-configuracion.md`](docs/hito4-configuracion.md).
+- **Secretos del Hito 4:** `scripts/gcp/configurar-hito4.sh` guarda en Secret Manager el SMTP (`smtp-url`, `mail-from`) y el cliente de Google (`google-client-id`, `google-client-secret`); el workflow los entrega a Cloud Run. Pasos completos en [`docs/procesos.md`](docs/procesos.md#configuración-de-los-servicios-externos-google-y-correo).
 - **Rotar un secreto** (por ejemplo la contraseña de aplicación de Gmail): se crea una versión nueva del secreto en Secret Manager y se fuerza una revisión nueva de Cloud Run para que la lea, sin tocar el código.
 - **Google OAuth:** cada URL pública de la aplicación necesita su URI de redirección autorizada (`<URL>/api/auth/google/callback`) en el cliente de Google; Cloud Run tiene dos formas de URL y cada una cuenta por separado. Si falta una, Google responde `redirect_uri_mismatch`.
 - **Preparar Google Cloud:** solo una vez, con [`scripts/gcp/preparar-cloud-run.sh`](scripts/gcp/preparar-cloud-run.sh) en Cloud Shell. El script crea el proyecto, las APIs, Artifact Registry, los secretos, las cuentas de servicio y la federación de identidad. Al terminar, muestra las variables que hay que añadir al repositorio: `GCP_PROJECT_ID`, `GCP_REGION`, `GCP_WIF_PROVIDER` y `GCP_DEPLOY_SA`.
@@ -753,7 +755,7 @@ El trabajo se ha planificado y seguido en **DoneTonic** (espacio *TFG*, equipo *
 | **Sprint 1** | 29/09/2026 – 27/10/2026 | 19 PBIs (P1–P19), 32 tareas (T1–T32) | Hito 1 a Hito 4 | Hecho (100 %) |
 | **Sprint 2** | 23/10/2026 – 29/10/2026 | 29 PBIs (P20–P48), 50 tareas (T33–T82) | Base del juego, Fase 2 a Fase 6 y Calidad | Hecho (100 %) |
 
-Cada PBI tiene su historia de usuario y sus criterios de aceptación, y cada tarea corresponde a una rama o a un PR de este repositorio. En [`docs/gestion/README.md`](docs/gestion/README.md) están:
+Cada PBI tiene su historia de usuario y sus criterios de aceptación, y cada tarea corresponde a una rama o a un PR de este repositorio. En [`docs/sprint-1.md`](docs/sprint-1.md) y [`docs/sprint-2.md`](docs/sprint-2.md) están:
 
 - el backlog completo de los dos sprints con el estado de cada PBI;
 - las historias de usuario y los criterios de aceptación del Sprint 2;
@@ -772,7 +774,7 @@ Cada PBI tiene su historia de usuario y sus criterios de aceptación, y cada tar
 
 ![Backlog de DoneTonic con los dos sprints](docs/capturas/donetonic/03-backlog.png)
 
-> El juego se programó del 23 al 26/10 y su backlog se registró en DoneTonic al cerrar el Sprint 2 (29/10), por eso las gráficas de DoneTonic del Sprint 2 marcan todo hecho ese día. La evolución real, por fechas de los PRs, está en [`docs/gestion/README.md`](docs/gestion/README.md#evolución-del-sprint-2).
+> El juego se programó del 23 al 26/10 y su backlog se registró en DoneTonic al cerrar el Sprint 2 (29/10), por eso las gráficas de DoneTonic del Sprint 2 marcan todo hecho ese día. La evolución real, por fechas de los PRs, está en [`docs/sprint-2.md`](docs/sprint-2.md#evolución-del-sprint-2).
 
 ## Prueba técnica del Sprint 1 (variante 3)
 
@@ -858,12 +860,16 @@ Cada fase es una etiqueta del Sprint 2 en DoneTonic y un PR a `main` ([qué PBIs
 | 6 | Logros con historia, equipaciones, estadísticas de fin de partida, música chiptune y grada, muñecos con más detalle y jefes más duros |
 | 7 (después del Sprint 2) | Muñecos chibi de 32×32 con rasgos propios, mapa con mucho más detalle, menú rediseñado (translúcido, centro despejado, botón de entrada), 5 habilidades, 2 pasivas y 5 combinaciones nuevas, y mejores efectos ([detalle](#fase-7-pixel-art-menú-y-habilidades-nuevas)) |
 
-Para el detalle de cada sistema, ver [`docs/documentacion-tecnica.md`](docs/documentacion-tecnica.md#9-el-juego).
+Para el detalle de cada sistema, ver [`docs/juego.md`](docs/juego.md) y [`docs/arquitectura.md`](docs/arquitectura.md).
 
 ## Documentación y memoria
 
-- [`docs/documentacion-tecnica.md`](docs/documentacion-tecnica.md): documentación técnica completa del proyecto (requisitos, decisiones, diseño, flujos con diagramas de secuencia, pruebas, despliegue, gestión y juego), pensada como base para escribir la memoria.
-- [`docs/revision-entrega.md`](docs/revision-entrega.md): revisión frase a frase del enunciado del Sprint 1.
-- [`docs/gestion/README.md`](docs/gestion/README.md): gestión en DoneTonic de los dos sprints (backlog, historias de usuario, trazabilidad, evolución y capturas).
-- [`docs/hito4-configuracion.md`](docs/hito4-configuracion.md): configuración del correo y de Google en producción.
+- [`docs/index.md`](docs/index.md): entrada del bundle documental, con qué documento alimenta cada capítulo de la memoria.
+- [`docs/log.md`](docs/log.md): cronología de pull requests y cambios, de lo más reciente a lo más antiguo.
+- [`docs/arquitectura.md`](docs/arquitectura.md): capas, modelo de datos, API, flujos con diagramas de secuencia, seguridad, despliegue y arquitectura del juego.
+- [`docs/requisitos.md`](docs/requisitos.md): contexto, alcance y estado de cada requisito.
+- [`docs/decisiones.md`](docs/decisiones.md): decisiones D-01 a D-23 con alternativas, motivo y estado.
+- [`docs/procesos.md`](docs/procesos.md): Scrum con DoneTonic, definición de hecho, GitHub Flow, pruebas, CI/CD y configuración del correo y de Google.
+- [`docs/sprint-1.md`](docs/sprint-1.md) y [`docs/sprint-2.md`](docs/sprint-2.md): hitos, backlog, trazabilidad, evolución, revisión frente al enunciado y retrospectiva de cada sprint.
+- [`docs/juego.md`](docs/juego.md), [`docs/glosario.md`](docs/glosario.md) y [`docs/capturas/README.md`](docs/capturas/README.md): diseño del juego, glosario e índice de capturas.
 - [`memoria/`](memoria/README.md): la memoria del proyecto, planteada como un TFG, en LaTeX. Se compila con **LuaLaTeX** (y sola en GitHub Actions); allí se explica cómo generar el PDF.

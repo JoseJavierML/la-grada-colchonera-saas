@@ -1,185 +1,19 @@
-# Gestión del proyecto (DoneTonic)
+---
+type: Sprint
+title: Sprint 2
+description: La lógica del juego: objetivo, etiquetas, backlog, historias de usuario, trazabilidad, evolución, verificación, trabajo posterior al cierre, métricas y retrospectiva.
+timestamp: 2026-11-19
+---
 
-Esta página reúne todo lo que se ha gestionado en **DoneTonic**, para que pueda revisarse desde el repositorio sin necesidad de entrar en la herramienta. Hay dos sprints: el **Sprint 1** (Hitos 1–4 del enunciado: la base SaaS) y el **Sprint 2** (la lógica del juego).
+# Sprint 2
 
-| Dato | Valor |
-|---|---|
-| Herramienta | [DoneTonic](https://app.donetonic.com) |
-| Espacio de trabajo / equipo | *TFG* / *Colchoneros* |
-| Sprint 1 | Del 29/09/2026 al 27/10/2026 · 19 PBIs (P1–P19) y 32 tareas (T1–T32), etiquetas *Hito 1* a *Hito 4* · **Hecho** |
-| Sprint 2 | Del 23/10/2026 al 29/10/2026 · 29 PBIs (P20–P48) y 50 tareas (T33–T82), etiquetas por fase del juego · **Hecho** |
-| Product Backlog | 48 PBIs y 82 tareas, todos hechos |
-| Prioridad | Todos los PBIs son **MUST**: los del Sprint 1 son requisitos obligatorios del enunciado y los del Sprint 2 son la lógica del juego que pidió el profesor para este sprint |
-| Capturas | Tomadas en DoneTonic el 29/10/2026, con los dos sprints cerrados |
+Del 23/10/2026 al 29/10/2026. Cerrado el Sprint 1, el profesor fijó que el **Sprint 2 es la lógica del juego**. El tablero está en [DoneTonic](https://app.donetonic.com): 29 PBIs (P20–P48) y 50 tareas (T33–T82), con una etiqueta por fase del juego. **Estado: hecho.**
 
-## Índice
+## Objetivo
 
-1. [Cómo se ha trabajado](#cómo-se-ha-trabajado) · [Definición de hecho](#definición-de-hecho-dod)
-2. [Capturas de DoneTonic](#capturas-de-donetonic)
-3. [Sprint 1: backlog, trazabilidad y evolución](#sprint-1-hitos-14)
-4. [Sprint 2: backlog, historias de usuario, trazabilidad y evolución](#sprint-2-la-lógica-del-juego)
+Construir sobre la base SaaS del Sprint 1 un juego *survivor* rojiblanco en pixel art, jugable en el navegador, con el progreso del club (plantilla, entrenamiento, fichas, logros) y el ranking guardados y validados en el servidor. El detalle del juego está en [juego.md](juego.md).
 
-## Cómo se ha trabajado
-
-1. **Del enunciado al backlog.** Cada requisito se convirtió en un PBI con una historia de usuario («Como … quiero … para …») y criterios de aceptación. En el Sprint 1 los requisitos venían del enunciado; en el Sprint 2, de la lógica del juego, agrupada por fases.
-2. **Del PBI a las tareas.** Cada PBI se dividió en el menor número de tareas que tuviera sentido (entre una y tres).
-3. **De la tarea al código.** En el Sprint 1 cada tarea tiene una rama propia `hito-N/Tx-descripcion` que se integra en la rama del hito mediante un PR `[Tx] ...`. En el Sprint 2 el trabajo se integró en `main` con **un PR por fase** del juego (#36, #44–#54), y cada tarea de DoneTonic indica en su descripción el PR donde está (`PR: #nn`).
-4. **Integración y despliegue.** Todos los PRs exigen el CI en verde y, al llegar a `main`, la aplicación se despliega sola en Google Cloud Run.
-5. **Seguimiento.** Al fusionar cada PR, su tarea pasa a *HECHO* en el tablero. Cuando todas las tareas de un PBI están hechas, el PBI pasa a *HECHO* automáticamente. Las gráficas de DoneTonic se actualizan solas.
-
-### Definición de hecho (DoD)
-
-Una tarea solo se considera **hecha** cuando cumple todo esto:
-
-- el código está en un PR con la referencia a la tarea (en el título en el Sprint 1, en la descripción de la tarea en el Sprint 2);
-- las pruebas automáticas pasan en el CI (check **Pruebas**), y las partes nuevas tienen sus propias pruebas;
-- el PR está fusionado y desplegado en la URL pública (https://la-grada-colchonera-1081564062572.europe-southwest1.run.app);
-- la documentación (README, `docs/`, `.env.example`) está actualizada si hace falta.
-
-Un **hito** (Sprint 1) está hecho cuando su rama está en `main`, desplegada y publicada como release. Una **fase del juego** (Sprint 2) está hecha cuando su PR está en `main`, desplegado y probado a mano en el navegador.
-
-## Capturas de DoneTonic
-
-Capturas tomadas el 29/10/2026, con los dos sprints cerrados (*Hecho*).
-
-**Product Backlog y Sprint Backlog.** A la izquierda, los PBIs priorizados con su etiqueta (los del Sprint 2 arriba). A la derecha, los dos sprints con sus fechas; el Sprint 1 está desplegado con sus PBIs.
-
-![Backlog del proyecto en DoneTonic con los dos sprints](../capturas/donetonic/03-backlog.png)
-
-### Sprint 1
-
-**Tablero del Sprint 1** al 100 %: los 19 PBIs (P1–P19, etiquetas *Hito 1* a *Hito 4*) en verde, hechos.
-
-![Tablero del Sprint 1 en DoneTonic](../capturas/donetonic/01-tablero-sprint.png)
-
-**Sprint Burndown y Sprint Burnup del Sprint 1.** Los 19 PBIs completados. El escalón del burnup es el cambio de alcance (se añadió P19, Cloud Run) y el último tramo son los tres PBIs del Hito 4 (P15–P17).
-
-![Sprint Burndown y Burnup del Sprint 1](../capturas/donetonic/02-graficas-sprint.png)
-
-### Sprint 2
-
-**Tablero del Sprint 2** al 100 %: los 29 PBIs (P20–P48) con su etiqueta de fase.
-
-![Tablero del Sprint 2 en DoneTonic](../capturas/donetonic/04-tablero-sprint2.png)
-
-**Tareas de un PBI.** P48 desplegado: sus tres tareas (T80–T82) en la columna *HECHO*, que suma las 50 tareas del sprint.
-
-![Tareas de P48 en la columna Hecho](../capturas/donetonic/05-sprint2-tareas-hechas.png)
-
-**Detalle de un PBI.** P44 con su historia de usuario, sus criterios de aceptación y sus tareas (T72–T74).
-
-![Detalle del PBI P44 en DoneTonic](../capturas/donetonic/08-pbi-detalle.png)
-
-**Sprint Burndown y Sprint Burnup del Sprint 2.** Los 29 PBIs completados.
-
-![Sprint Burndown y Burnup del Sprint 2](../capturas/donetonic/06-graficas-sprint2.png)
-
-> **Sobre las gráficas del Sprint 2.** El juego se programó del 23 al 26/10, antes de que el profesor fijara que el Sprint 2 sería la lógica del juego. El backlog del Sprint 2 se registró en DoneTonic al cerrar el sprint (29/10), así que DoneTonic marca todos los PBIs como hechos ese día y sus gráficas salen como una recta. La evolución real, sacada de las fechas de los PRs, está en la [tabla de evolución del Sprint 2](#evolución-del-sprint-2).
-
-**Backlog Burndown y Backlog Burnup.** El producto completo a lo largo de los dos sprints (48 PBIs).
-
-![Backlog Burndown y Burnup en DoneTonic](../capturas/donetonic/07-graficas-backlog.png)
-
-## Sprint 1 (Hitos 1–4)
-
-Del 29/09/2026 al 27/10/2026. Alcance: los Hitos 1, 2 y 3 (P1–P14), el Hito 4 (P15–P17), P18 (README y revisión) y P19 (despliegue en Google Cloud Run con los créditos de educación). La primera entrega (12/10/2026) se limitó a los Hitos 1–3, P18 y P19; el Hito 4 se completó el 23/10/2026.
-
-### Backlog y estado del Sprint 1
-
-| PBI | Hito | Título | Estado | Entrega |
-|---|---|---|---|---|
-| P1 | H1 | Repositorio GitHub y flujo GitHub Flow | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P2 | H1 | Integración continua (CI) | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P3 | H1 | Despliegue continuo en URL pública | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P4 | H1 | Lógica de gestión de usuarios (en memoria) | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P5 | H1 | Pruebas unitarias automatizadas de la lógica | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P6 | H1 | Capa API de usuarios | Hecho | [hito-1](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-1) |
-| P7 | H2 | Frontend: interfaz y cliente de comunicación separados | Hecho | [hito-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-2) |
-| P8 | H2 | Registro e inicio de sesión locales | Hecho | [hito-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-2) |
-| P9 | H2 | Cierre de sesión y mantenimiento de la sesión | Hecho | [hito-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-2) |
-| P10 | H2 | Rutas protegidas en el servidor | Hecho | [hito-2](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-2) |
-| P11 | H3 | Persistencia en base de datos real | Hecho | [hito-3](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-3) |
-| P12 | H3 | Gestión de secretos con variables de entorno | Hecho | [hito-3](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-3) |
-| P13 | H3 | Roles de usuario y administrador | Hecho | [hito-3](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-3) |
-| P14 | H3 | Registro (log) de la actividad | Hecho | [hito-3](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-3) |
-| P15 | H4 | Inicio de sesión con proveedor externo (OAuth) | Hecho | [hito-4](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-4) · PR #40 |
-| P16 | H4 | Confirmación de cuenta por correo electrónico | Hecho | [hito-4](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-4) · PRs #38 y #39 |
-| P17 | H4 | Manejo de errores y feedback al usuario | Hecho | [hito-4](https://github.com/VelaElDios/la-grada-colchonera-saas/releases/tag/hito-4) · PRs #37–#41 |
-| P18 | H4 | README completo y revisión de la entrega | Hecho | Cierre del sprint |
-| P19 | H4 | Despliegue continuo en Google Cloud Run | Hecho | Cierre del sprint |
-
-> Aunque P17 (manejo de errores) es del Hito 4, la aplicación ya tenía parte de esa funcionalidad desde el Hito 1: un manejador de errores común con el formato `{"error": {"code", "message"}}` y mensajes de error y de éxito en la interfaz.
-
-### Trazabilidad del Sprint 1: tarea → rama → pull request
-
-| PBI | Tarea | Descripción | Rama | Pull request | Estado |
-|---|---|---|---|---|---|
-| P1 | T1 | Crear repositorio y estructura base | `hito-1/T1-estructura-base` | [#1](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/1) | Hecho |
-|  | T2 | Configurar GitHub Flow | `hito-1/T2-github-flow` | [#2](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/2) | Hecho |
-| P2 | T3 | Workflow de CI con GitHub Actions | `hito-1/T3-integracion-continua` | [#3](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/3) | Hecho |
-| P3 | T4 | Despliegue automático en proveedor cloud gratuito | `hito-1/T4-despliegue-continuo · hito-1/T4-url-publica` | [#4](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/4) · [#10](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/10) | Hecho |
-| P4 | T5 | Modelo de usuario y repositorio en memoria | `hito-1/T5-modelo-repositorio-memoria` | [#5](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/5) | Hecho |
-|  | T6 | Servicio de gestión de usuarios | `hito-1/T6-servicio-usuarios` | [#6](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/6) | Hecho |
-| P5 | T7 | Framework de pruebas y al menos 5 pruebas | `hito-1/T7-pruebas-unitarias` | [#7](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/7) | Hecho |
-| P6 | T8 | Endpoints de la API de usuarios | `hito-1/T8-api-usuarios` | [#8](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/8) | Hecho |
-| P7 | T9 | Cliente de comunicación con la API | `hito-2/T9-cliente-api` | [#11](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/11) | Hecho |
-|  | T10 | Interfaz de usuario: vistas y navegación | `hito-2/T10-vistas-navegacion` | [#12](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/12) | Hecho |
-| P8 | T11 | Registro y login en el backend (con hash) | `hito-2/T11-registro-login-backend` | [#13](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/13) | Hecho |
-|  | T12 | Formularios de registro y login en el frontend | `hito-2/T12-formularios-frontend` | [#14](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/14) | Hecho |
-| P9 | T13 | Mantener la sesión al recargar y cerrar sesión | `hito-2/T13-gestion-sesion` | [#15](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/15) | Hecho |
-| P10 | T14 | Middleware de autenticación y protección de rutas | `hito-2/T14-rutas-protegidas` | [#16](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/16) | Hecho |
-| P11 | T15 | Elegir y configurar la base de datos | `hito-3/T15-configurar-bd` | [#18](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/18) | Hecho |
-|  | T16 | Repositorio de BD sustituyendo al de memoria | `hito-3/T16-repositorio-postgres` | [#19](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/19) | Hecho |
-| P12 | T17 | Sacar los secretos a variables de entorno | `hito-3/T17-secretos-entorno` | [#20](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/20) | Hecho |
-| P13 | T18 | Roles, autorización y primer administrador (backend) | `hito-3/T18-roles-autorizacion` | [#21](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/21) | Hecho |
-|  | T19 | Panel de administración y baja de cuenta (frontend) | `hito-3/T19-panel-admin` | [#22](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/22) | Hecho |
-| P14 | T20 | Configurar el logging de la actividad relevante | `hito-3/T20-logging` | [#23](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/23) | Hecho |
-| P15 | T21 | Registrar la aplicación OAuth en Google | `hito-4/T22-google-oauth` (y configuración en Google Cloud, ver [`hito4-configuracion.md`](../hito4-configuracion.md)) | [#40](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/40) | Hecho |
-|  | T22 | Flujo de inicio de sesión con OAuth | `hito-4/T22-google-oauth` | [#40](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/40) | Hecho |
-| P16 | T23 | Servicio de correo | `hito-4/T23-correo` | [#38](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/38) | Hecho |
-|  | T24 | Flujo de confirmación de la cuenta | `hito-4/T24-confirmacion` | [#39](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/39) | Hecho |
-| P17 | T25 | Errores en el backend | `hito-4/T25-secretos-hito4` y el resto de ramas del hito | [#37](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/37)–[#41](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/41) | Hecho |
-|  | T26 | Mensajes de error en el frontend | `hito-4/T26-privacidad` y el resto de ramas del hito | [#37](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/37)–[#41](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/41) | Hecho |
-| P18 | T27 | Completar el README | `hito-4/T27-readme-completo` | [#25](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/25) | Hecho |
-|  | T28 | Etiquetas de hito y revisión final | `hito-4/T28-revision-entrega` | [#26](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/26) | Hecho |
-|  | T31 | Revisión frase a frase contra el enunciado y README final | `hito-4/T31-revision-enunciado` | [#30](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/30) | Hecho |
-|  | T32 | Carpeta de la memoria en LuaLaTeX | `hito-4/T32-carpeta-memoria` | [#31](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/31) | Hecho |
-| P19 | T29 | Contenerizar la aplicación con Docker | `hito-4/T29-docker` | [#27](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/27) | Hecho |
-|  | T30 | Despliegue continuo en Cloud Run con GitHub Actions | `hito-4/T30-cloud-run` | [#28](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/28) | Hecho |
-
-Cierres de hito: [#9](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/9) (Hito 1 → `main`), [#17](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/17) (Hito 2 → `main`), [#24](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/24) (Hito 3 → `main`) [#29](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/29) (cierre del sprint → `main`) y [#32](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/32) (revisión final y memoria → `main`).
-
-> **Hito 4.** En DoneTonic las tareas del Hito 4 se llaman por lo que hacen (T21 *Registrar app OAuth*, T22 *Flujo login OAuth*, T23 *Servicio correo*, T24 *Flujo confirmación*, T25 *Errores backend* y T26 *Mensajes frontend*). En el repositorio el trabajo se repartió en cinco ramas (`hito-4/T22-google-oauth` #40, `T23-correo` #38, `T24-confirmacion` #39, `T25-secretos-hito4` #37 y `T26-privacidad` #41). El manejo de errores (P17) está repartido por las cinco. Las seis tareas se marcaron como hechas en DoneTonic al cerrar el Sprint 1.
-
-### Evolución del Sprint 1
-
-PBIs pendientes del alcance de la entrega (P1–P14, P18 y P19; 16 en total) según se cerraba cada hito. Es lo que muestran las gráficas *Backlog Burndown* y *Sprint Burndown* de DoneTonic:
-
-| Momento | PBIs hechos | PBIs pendientes |
-|---|---|---|
-| Inicio del Sprint 1 (29/09/2026) | 0 | 15 |
-| Cierre del Hito 1 (release `hito-1`) | 6 | 9 |
-| Cierre del Hito 2 (release `hito-2`) | 10 | 5 |
-| Cierre del Hito 3 (release `hito-3`) | 14 | 1 |
-| Se añade P19 (Cloud Run) para usar los créditos de Google Cloud | 14 | 2 |
-| Cierre del sprint (P18 y P19) | 16 | 0 |
-
-```mermaid
-xychart-beta
-    title "Burndown de la entrega (PBIs pendientes)"
-    x-axis ["Inicio", "Hito 1", "Hito 2", "Hito 3", "+P19", "Cierre"]
-    y-axis "PBIs pendientes" 0 --> 15
-    line [15, 9, 5, 1, 2, 0]
-    bar [15, 9, 5, 1, 2, 0]
-```
-
-> **Cambio de alcance durante el sprint:** el profesor repartió créditos de Google Cloud para educación. Para aprovecharlos se añadió al sprint el PBI **P19** (despliegue en Google Cloud Run), con sus tareas T29 y T30. Render se mantiene como despliegue alternativo.
-
-## Sprint 2 (la lógica del juego)
-
-Del 23/10/2026 al 29/10/2026. Cerrado el Sprint 1, el profesor fijó que el **Sprint 2 es la lógica del juego**. El juego ya estaba hecho, en seis fases, así que el sprint recoge ese trabajo como backlog: 29 PBIs (P20–P48) y 50 tareas (T33–T82), con una etiqueta por fase.
-
-### Etiquetas
+## Etiquetas
 
 | Etiqueta | PBIs | Qué agrupa |
 |---|---|---|
@@ -191,7 +25,7 @@ Del 23/10/2026 al 29/10/2026. Cerrado el Sprint 1, el profesor fijó que el **Sp
 | Fase 6 · Logros y sonido | P42–P46 | Logros, pantalla de fin, música y grada, muñecos y jefes |
 | Calidad | P47–P48 | Errores corregidos, documentación y gestión |
 
-### Backlog y estado del Sprint 2
+## Backlog y estado del Sprint 2
 
 «Hecho» es el día en que se fusionó en `main` el último PR del PBI.
 
@@ -227,7 +61,7 @@ Del 23/10/2026 al 29/10/2026. Cerrado el Sprint 1, el profesor fijó que el **Sp
 | P47 | Calidad | Corrección de errores detectados | T77–T79 | #51, #55, #56 | 29/10/2026 | Hecho |
 | P48 | Calidad | Documentación y gestión del Sprint 2 | T80–T82 | #55 | 29/10/2026 | Hecho |
 
-### Historias de usuario y criterios de aceptación
+## Historias de usuario y criterios de aceptación
 
 Cada PBI del Sprint 2 tiene en DoneTonic su historia de usuario y sus criterios de aceptación. Son estos:
 
@@ -352,7 +186,7 @@ Cada PBI del Sprint 2 tiene en DoneTonic su historia de usuario y sus criterios 
 
 </details>
 
-### Trazabilidad del Sprint 2: tarea → pull request
+## Trazabilidad del Sprint 2: tarea → pull request
 
 Las tareas de cada PBI indican en su descripción de DoneTonic el PR donde está el trabajo.
 
@@ -426,7 +260,7 @@ Las tareas de cada PBI indican en su descripción de DoneTonic el PR donde está
 | [#55](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/55) | Documentación (README y documentación técnica) y arreglo del reenvío | 27/10/2026 |
 | [#56](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/56) | Arreglo: volver con la misma cuenta de Google tras darse de baja | 29/10/2026 |
 
-### Evolución del Sprint 2
+## Evolución del Sprint 2
 
 PBIs pendientes según la fecha en que se fusionó el último PR de cada uno:
 
@@ -457,3 +291,115 @@ xychart-beta
 | Tareas | 32 | 50 |
 | Pull requests fusionados | #1–#34 y #37–#41 (uno por tarea y por cierre de hito) | #36 y #44–#56 (uno por fase y por arreglo) |
 | Pruebas automáticas en `main` al cerrar el sprint | — | 276 (cuentas, API, base de datos y juego) |
+
+## Capturas de DoneTonic
+
+**Tablero del Sprint 2** al 100 %: los 29 PBIs (P20–P48) con su etiqueta de fase.
+
+![Tablero del Sprint 2 en DoneTonic](capturas/donetonic/04-tablero-sprint2.png)
+
+**Tareas de un PBI.** P48 desplegado: sus tres tareas (T80–T82) en la columna *HECHO*, que suma las 50 tareas del sprint.
+
+![Tareas de P48 en la columna Hecho](capturas/donetonic/05-sprint2-tareas-hechas.png)
+
+**Detalle de un PBI.** P44 con su historia de usuario, sus criterios de aceptación y sus tareas (T72–T74).
+
+![Detalle del PBI P44 en DoneTonic](capturas/donetonic/08-pbi-detalle.png)
+
+**Sprint Burndown y Sprint Burnup del Sprint 2.** Los 29 PBIs completados.
+
+![Sprint Burndown y Burnup del Sprint 2](capturas/donetonic/06-graficas-sprint2.png)
+
+> **Sobre las gráficas del Sprint 2.** El juego se programó del 23 al 26/10, antes de que el profesor fijara que el Sprint 2 sería la lógica del juego. El backlog del Sprint 2 se registró en DoneTonic al cerrar el sprint (29/10), así que DoneTonic marca todos los PBIs como hechos ese día y sus gráficas salen como una recta. La evolución real, sacada de las fechas de los PRs, está en la [tabla de evolución del Sprint 2](#evolución-del-sprint-2).
+
+**Backlog Burndown y Backlog Burnup.** El producto completo a lo largo de los dos sprints (48 PBIs).
+
+![Backlog Burndown y Burnup en DoneTonic](capturas/donetonic/07-graficas-backlog.png)
+
+## Verificación
+
+- Suite automática: las fases del juego añadieron sus propias pruebas (`juego-*.test.js`, `api.juego.test.js`, `juegoRepository.test.js`, `game.test.js`); el detalle por fichero está en [procesos.md](procesos.md#pruebas). Todas pasan en el CI con PostgreSQL 17.
+- Cada fase se probó a mano en el navegador (ordenador y móvil) antes de fusionarse, y se comprobó desplegada en Cloud Run.
+- Las reglas del club y los logros se validan en el servidor: un resultado inventado se rechaza (pruebas en `api.juego.test.js`).
+
+## Trabajo posterior al cierre del sprint
+
+Después del 29/10/2026 el juego siguió mejorando sobre `main`, con el mismo flujo (rama, PR, CI y despliegue). Estos cambios no están registrados como PBIs en DoneTonic; están en [log.md](log.md).
+
+| Fecha | PR | Qué |
+|---|---|---|
+| 29/10/2026 | [#56](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/56) | Tras eliminar la cuenta se puede volver con el mismo email o con Google (lo encontró un compañero probando la aplicación) |
+| 02/11/2026 | [#58](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/58) | Fase 7: muñecos chibi, mapa nuevo, menú rediseñado, pausa con árbol de habilidades, 5 armas, 2 pasivas y 5 combinaciones nuevas |
+| 03/11/2026 | [#59](https://github.com/VelaElDios/la-grada-colchonera-saas/pull/59) | Guardado de partidas largas, experiencia que dejaba de salir, hitboxes y rendimiento |
+
+## Retrospectiva
+
+### Hechos
+
+- Los 29 PBIs están hechos e integrados en `main` con un PR por fase (#36 y #44–#54) y los arreglos #51, #55 y #56.
+- 322 pruebas automáticas en verde tras el trabajo posterior al cierre.
+- No hay etiqueta `sprint-2` en el repositorio.
+
+### Qué funcionó
+
+- Mantener la simulación del juego pura y determinista: se prueba en Node sin navegador, igual que el backend.
+- Compartir las reglas (`club.js`, `config.js`, `logros.js`) entre cliente y servidor: una sola fuente de verdad y validación anti-trampas.
+- Revisar cada fase con capturas en el navegador: así aparecieron fallos visuales y de interacción que las pruebas no veían.
+
+### Problemas y cómo se resolvieron
+
+| Problema | Causa | Solución |
+|---|---|---|
+| El juego dejó de cargar tras un cambio | Una variable del módulo usada en la plantilla HTML antes de existir | Arreglo inmediato y una prueba que importa todos los módulos del juego |
+| Los jugadores podían esconderse detrás de los tejados | La colisión no coincidía con el dibujo en la vista 3/4 | Colisión por los pies y obstáculos que chocan en todo su dibujo |
+| Tirones al pintar el suelo | Se pintaban muchas texturas por píxel en el mismo fotograma | Una textura por celda y ambiente, como mucho una por fotograma y por adelantado |
+| Simulación lenta con muchos rivales | Búsqueda de obstáculos con claves de texto y demasiadas celdas | Búsqueda por radio con claves numéricas: unas 4,5 veces más rápida |
+| El regate hacía al jugador intocable demasiado pronto | Subía de nivel sin límite | Niveles que no salen hasta cierto minuto y recarga mínima |
+| Equilibrio difícil de ajustar a mano | Muchas variables | Todo el equilibrio en `config.js` y calibración con un bot que juega partidas simuladas |
+| Quien eliminaba su cuenta (sobre todo de Google) no podía volver a entrar nunca con ese email (lo encontró un amigo probando la app, 29/10/2026) | Por la baja lógica la fila seguía en `users` con su email, que era `UNIQUE`; además, por diseño, una cuenta eliminada no podía entrar «ni con Google» | Migración 005: el email solo es único entre las cuentas no eliminadas (índice parcial); `findByEmail` ignora las eliminadas, así que registrarse o entrar con Google crea una cuenta nueva; al eliminar se suelta el mote y la cuenta sale del ranking. Pruebas nuevas del caso completo |
+| Al pulsar «Reenviar el correo» después de un error de inicio de sesión, el primer clic se perdía | Al salir del campo de contraseña vacío aparecía su error, la página se movía y el clic caía fuera del botón | Un campo vacío que no se ha tocado ya no da error al salir de él; tras un fallo del servidor la contraseña se vacía sin marcar error (encontrado al hacer las capturas, 27/10/2026) |
+| Las partidas largas no se guardaban ni salían en el ranking | El servidor rechazaba más de 20 rivales eliminados por segundo, y pasado el minuto 20 salen hasta 50 | Tope calculado con el ritmo real de aparición de rivales (`bajasPosibles`) |
+| A veces dejaba de salir experiencia | Con 450 gemas en el campo, la experiencia nueva se sumaba a una gema al azar, casi siempre lejos | Se trae la gema más lejana a donde cae el rival |
+| Obstáculos dibujados con el mapa de otra partida | La caché de dibujos de obstáculos no incluía la semilla del mapa | La semilla forma parte de la clave de la caché |
+
+### Qué cambiaría
+
+- Registrar el backlog en DoneTonic antes de programar, para que las gráficas del sprint reflejen la evolución real ([D-19](decisiones.md)).
+- Dividir el trabajo del juego en PRs más pequeños, uno por tarea como en el Sprint 1.
+- Crear la etiqueta `sprint-2` al cerrar el sprint.
+
+## Métricas del proyecto
+
+| Métrica | Valor |
+|---|---|
+| PBIs / tareas del Sprint 1 | 19 / 32 |
+| PBIs / tareas del Sprint 2 | 29 / 50 |
+| Pull requests | Más de 50 (uno por tarea, uno por cierre de hito y uno por fase del juego) |
+| Releases | `hito-1`, `hito-2`, `hito-3`, `hito-4`, `sprint-1` |
+| Pruebas automáticas | 322 (+ el recorrido con PostgreSQL real en el CI) |
+| Endpoints de la API | 23 |
+| Migraciones | 5 |
+| Líneas de código del backend (`src/`, con SQL) | ~2.300 |
+| Líneas de la interfaz web (`ui.js`, `api.js`, `ui/`) | ~1.150 |
+| Líneas de CSS | ~950 |
+| Líneas del juego (`public/js/game/`, 35 módulos) | ~14.800 |
+| Líneas de pruebas | ~5.050 |
+| Dependencias de producción | 6 (`express`, `express-session`, `connect-pg-simple`, `pg`, `bcryptjs`, `nodemailer`) |
+| Contenido del juego | 36 jugadores, 2 entrenadores, 29 armas, 16 pasivas, 29 combinaciones, 6 ultras, 16 equipos, 10 jefes, 5 ambientes, 26 selecciones, 29 logros, 10 equipaciones |
+
+## Conclusiones
+
+- Los **cuatro hitos del Sprint 1 están completos**, desplegados y comprobados en producción, con trazabilidad completa desde el backlog hasta la release. El **Sprint 2** (la lógica del juego) también está cerrado: 29 PBIs hechos.
+- La **arquitectura en capas con inyección de dependencias** permitió cambiar de memoria a PostgreSQL, añadir correo y Google o montar un juego entero encima sin tocar la lógica existente.
+- Probar primero los **casos de error** y tener el CI como requisito para fusionar evitó regresiones durante todo el desarrollo.
+- Pasar de red social a **juego** fue una buena decisión: reutiliza toda la base del sprint y obliga a resolver problemas técnicos interesantes (determinismo, rendimiento, validación en el servidor, generación procedural, audio sintetizado).
+- Lecciones: dividir pronto en tareas pequeñas, automatizar el despliegue desde el primer día, documentar las decisiones mientras se toman y comprobar visualmente cada cambio de interfaz (así apareció, por ejemplo, el clic perdido de la sección 13).
+
+## Trabajo futuro
+
+- **Multijugador:** lista de amigos y partidas en grupo (*party*) de hasta 4 jugadores, con WebSockets y un servidor autoritativo.
+- Más contenido: jugadores, jefes, equipaciones y logros; mejorar los sprites de los jugadores menos conocidos.
+- Ranking por temporadas y por ambiente.
+- Recuperación de contraseña por correo y limitación de intentos de inicio de sesión (*rate limiting*).
+- Pruebas de extremo a extremo automatizadas en el CI (Playwright) y medición de cobertura.
+- Aplicación instalable (PWA) para jugar desde el móvil como una app.
