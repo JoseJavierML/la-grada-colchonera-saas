@@ -478,7 +478,7 @@ public/
   js/ui/vistas/        Una vista por módulo: inicio, entrar, registro, perfil, admin, jugar y 404
   js/api.js            Cliente de comunicación con la API (único sitio con fetch, timeout de 15 s)
   js/game/             El juego: simulación pura, dibujo en canvas, HUD, sonido, logros y club
-tests/                 322 pruebas automatizadas (unitarias, de API, de base de datos y del juego)
+tests/                 330 pruebas automatizadas (unitarias, de API, de base de datos y del juego)
 docs/                  Bundle documental: index, log, arquitectura, requisitos, decisiones, procesos, sprints, juego y capturas
 memoria/               Memoria del proyecto en LuaLaTeX
 scripts/               Preparación de Google Cloud y modo pruebas del juego
@@ -536,7 +536,8 @@ Todas las rutas están bajo `/api`, reciben y devuelven JSON y usan la cookie de
 | GET | `/api/juego/perfil` | Sesión | Tu club: plantilla, entrenamiento, fichas, puntos, logros y equipaciones |
 | POST | `/api/juego/partidas` | Sesión | Empieza una partida (`{ personaje, entrenador }`): `201 { partidaId }` |
 | POST | `/api/juego/partidas/:id/fin` | Sesión | Termina la partida (`{ tiempo, nivel, jefes, bajas, logros }`): valida el resultado y devuelve recompensas, récord y logros nuevos |
-| POST | `/api/juego/contratar` | Sesión | Gasta una ficha de contrato y ficha a un jugador nuevo (`409` sin fichas) |
+| POST | `/api/juego/contratar` | Sesión | Gasta una ficha de contrato y ficha a un jugador nuevo (`{ pack }` opcional: `atleti` por defecto o `alba`; `409` sin fichas o con el DLC sin activar) |
+| POST | `/api/juego/packs/:pack/activar` | Sesión | Activa un DLC (`alba`): el club recibe su equipo inicial una sola vez |
 | POST | `/api/juego/entrenar` | Sesión | Gasta un punto de entrenamiento (`{ personaje, estadistica }`) |
 | PUT | `/api/juego/identidad` | Sesión | Mote y avatar (`{ "apodo": "...", "avatar": "p:koke" \| "e:cholo" }`): `409` si el mote ya lo tiene otro |
 | GET | `/api/juego/ranking` | Sesión | Ranking de la grada (mote y avatar de cada uno, nunca el correo) |
@@ -632,7 +633,7 @@ No hace falta tener PostgreSQL: en local, las pruebas de base de datos usan `pg-
 TEST_DATABASE_URL=postgresql://usuario:clave@localhost:5432/grada_test npm test
 ```
 
-Son **322 pruebas** en 30 ficheros (más el recorrido con PostgreSQL real, que solo se ejecuta en el CI). Muchas comprueban casos de error, no solo el camino feliz.
+Son **330 pruebas** en 31 ficheros (más el recorrido con PostgreSQL real, que solo se ejecuta en el CI). Muchas comprueban casos de error, no solo el camino feliz.
 
 | Fichero | Pruebas | Qué comprueba |
 |---|---:|---|
@@ -650,6 +651,7 @@ Son **322 pruebas** en 30 ficheros (más el recorrido con PostgreSQL real, que s
 | `bootstrap.test.js` · `health.test.js` | 2 + 1 | Arranque con memoria o PostgreSQL y comprobación de salud |
 | `api.database.test.js` | (CI) | Recorrido completo con PostgreSQL real: registro, inicio de sesión y sesión guardada en la base de datos |
 | **Juego:** `juego-club` · `juego-movilidad` · `api.juego` · `juego-personajes` · `juego-habilidades` · `juego-ultras` · `juego-logros` · `game` · `juegoRepository` | 27 · 22 · 15 · 14 · 14 · 13 · 13 · 10 · 8 | Simulación (paso fijo, semilla), mundo y colisiones, personajes, habilidades, ultras, jefes, logros, club, ranking y validación anti-trampas en el servidor |
+| `juego-pack-alba.test.js` | 8 | DLC del Albacete Balompié: sus 14 jugadores, entrenadores (ultis de onda y de furia), equipaciones y logros, que el Atleti, los rivales y los jefes siguen igual, el club por packs y la API para activar el DLC y fichar en él |
 | **Fase 7:** `juego-sprites` · `juego-habilidades-nuevas` · `juego-mapa` · `juego-menu` | 9 · 8 · 5 · 7 | Muñecos chibi de 32×32 sin piernas (cada persona distinta, peinados, barbas, fotogramas, caché), habilidades, pasivas y combinaciones nuevas, mapa (sombras, edificios en su sitio, público animado, texturas repartidas entre fotogramas) y menú animado |
 
 El CI ejecuta todas las pruebas contra un **PostgreSQL 17 real** y, en otro trabajo, construye la imagen Docker y comprueba que el contenedor responde en `/api/health`.
@@ -828,6 +830,7 @@ Cerrado el Sprint 1, el profesor dejó libertad para el diseño y fijó que el *
 |---|---|
 | **Jugadores** | 36 de la historia del Atleti (4 porteros, 9 defensas, 13 medios y 10 delanteros) con **rareza según lo que fueron en el club**: Leyenda (Oblak, Godín, Koke, Griezmann, Torres, Gabi, Adelardo, Luis Aragonés), Épico (Simeone, Futre, Diego Costa, Forlán, Miranda, Saúl, Courtois, Pantić), Raro (Kun Agüero, Falcao, Julián Álvarez, Llorente, Savić, Trippier, Tiago, Partey) y Común. La posición marca las estadísticas y cada uno puede aprender de 8 a 16 habilidades según su rareza y su forma de jugar |
 | **Entrenadores** | Cholo Simeone (ulti «¡Partido a partido!») y Luis Aragonés (ulti «Furia Roja») |
+| **DLC Albacete Balompié** | Pack seleccionable que se activa desde el Vestuario y regala su equipo inicial (4 comunes). Incluye 14 jugadores del Alba (Zalazar y Catali como leyendas, Morientes, Coco, Geli, López Alfaro, Keylor Navas, Molina, Santi Denia, Bjelica, Vallejo, Pacheco, Zozulia y Tomeu Nadal), 2 entrenadores (Benito Floro, ulti «¡Queso Mecánico!», y César Ferrando, ulti «Noche en el Belmonte»), 3 equipaciones propias (segunda negra y dorada, tercera granate y «Queso Mecánico 91») y 4 logros con datos del club. Se elige entre **Atlético de Madrid** y **Albacete Balompié** en el Vestuario, en Dirección y en Contratar. Los rivales, los jefes y el equilibrio son los mismos. Datos en `public/js/game/pack-alba.js` |
 | **Habilidades** | 29 armas que se disparan solas, con 5 niveles (gol de carambola, presión alta, la ola, fuera de juego, ruleta, balón, cañonazo de falta, córner, cabezazo, entrada rasante, barrera, chilena, volea, penalti, regate, caño, pared, cántico, VAR, bengala…) y 16 pasivas. Las muy fuertes no suben de nivel hasta cierto minuto |
 | **Combinaciones y ultras** | 29 combinaciones («metas») que se activan al juntar ciertas habilidades y dan bonus; completando varias se consiguen 6 **ULTRAS** (Premio Puskás, Ganador del Balón de Oro, MVP de la Champions, Trofeo Zamora, Bota de Oro histórica y Mejor jugador del Mundial) |
 | **Rivales** | 16 equipos famosos con jugadores genéricos; unos embisten y otros disparan, y aparecen élites (blindado, veloz, furioso) |

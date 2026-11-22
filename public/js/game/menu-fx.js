@@ -2,6 +2,7 @@
 // aparecen escalonadas, la entrada al partido («¡Saltan al campo!») y los consejos del míster.
 // Solo se toca el DOM dentro de las funciones (nunca al importar), así el módulo se puede cargar en node:test.
 // Todo lo que se mueve respeta `reducido` (prefers-reduced-motion): sin desplazamientos, como mucho fundidos.
+import { LEMAS_ALBA } from './pack-alba.js';
 
 const TAU = Math.PI * 2;
 const SUAVE = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
@@ -31,6 +32,7 @@ export const CONSEJOS = [
 export const LEMAS = {
   cholo: 'Partido a partido. Y si se cree y se trabaja, se puede.',
   aragones: 'Ganar, y ganar, y ganar, y volver a ganar.',
+  ...LEMAS_ALBA, // los míster del DLC del Alba
 };
 
 /** Consejo número `n` para un entrenador: cada cinco, su lema. */

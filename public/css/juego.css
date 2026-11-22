@@ -314,6 +314,13 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; margin-right: 2
 
 /* ---------- Vestuario: plantilla filtrable + ficha del jugador ---------- */
 .pantalla__caja--vestuario { width: min(100%, 980px); height: min(calc(100vh - 100px), 800px); grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+/* Vestuario en pantallas anchas: columna flexible en la que la lista de jugadores nunca baja de 340 px (con el
+   selector de equipo y el aviso del DLC encima, en pantallas bajas se aplastaba); si no cabe, se desplaza la caja entera. */
+@media (min-width: 761px) {
+  [data-pantalla="vestuario"] > .pantalla__caja--vestuario { display: flex; flex-direction: column; }
+  [data-pantalla="vestuario"] > .pantalla__caja--vestuario > * { flex-shrink: 0; }
+  [data-pantalla="vestuario"] .vest { flex: 1 0 340px; min-height: 340px; }
+}
 .vest__cabecera { display: flex; justify-content: space-between; align-items: end; gap: var(--s-4); flex-wrap: wrap; }
 .vest__aviso { max-width: 360px; font-size: var(--t-xs); color: var(--gris-300); }
 .vest__filtros { display: flex; gap: var(--s-2); flex-wrap: wrap; }
@@ -321,6 +328,27 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; margin-right: 2
 .filtro span { margin-left: 4px; opacity: 0.6; }
 .filtro:hover { background: rgb(255 255 255 / 0.14); }
 .filtro[aria-pressed="true"] { background: #fff; color: var(--azul-900); }
+
+/* Selector de pack: Atlético de Madrid / DLC Albacete Balompié (colores de cada club en --pack-c y --pack-c2) */
+.packs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-2); }
+.pack-boton { position: relative; display: flex; align-items: center; gap: var(--s-2); flex: 1 1 220px; min-width: 0; padding: 8px 12px; border-radius: var(--r-md, 12px); border: 2px solid rgb(255 255 255 / 0.16); background: rgb(255 255 255 / 0.05); color: #fff; text-align: left; transition: background 0.15s, border-color 0.15s; }
+.pack-boton:hover { background: rgb(255 255 255 / 0.12); }
+.pack-boton[aria-pressed="true"] { border-color: var(--pack-c); background: rgb(255 255 255 / 0.14); box-shadow: 0 0 0 2px var(--pack-c2) inset; }
+.pack-boton__escudo { flex: none; width: 26px; height: 30px; border-radius: 4px 4px 13px 13px; border: 2px solid var(--pack-c2); background: repeating-linear-gradient(90deg, var(--pack-c) 0 6px, var(--pack-c2) 6px 12px); }
+.pack-boton--alba .pack-boton__escudo { background: linear-gradient(180deg, var(--pack-c) 0 55%, var(--pack-c2) 55% 100%); border-color: #d4af37; }
+.pack-boton__texto { display: grid; min-width: 0; }
+.pack-boton__texto strong { font-size: var(--t-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pack-boton__texto small { font-size: var(--t-xs); color: var(--gris-300); }
+.pack-boton__dlc { margin-left: auto; padding: 2px 8px; border-radius: var(--r-pill); background: #d4af37; color: #111; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; }
+.pack-aviso { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; padding: 10px 14px; border-radius: var(--r-md, 12px); border: 2px dashed #d4af37; background: linear-gradient(90deg, rgb(255 255 255 / 0.1), rgb(0 0 0 / 0.2)); }
+.pack-aviso[hidden] { display: none; }
+.pack-aviso__texto { display: grid; gap: 2px; flex: 1 1 320px; min-width: 0; }
+.pack-aviso__texto strong { font-size: var(--t-sm); }
+.pack-aviso__texto span { font-size: var(--t-xs); color: var(--gris-300); }
+.pack-aviso__boton { flex: none; }
+/* Jugadores del DLC aún sin fichar: el retrato se ve en color (con su candado) para reconocer a cada uno */
+.ficha--bloqueada.ficha--dlc { opacity: 0.85; }
+.ficha--bloqueada.ficha--dlc .ficha__retrato { filter: none; }
 .vest { display: grid; grid-template-columns: minmax(230px, 300px) 1fr; grid-template-rows: minmax(0, 1fr); gap: var(--s-4); min-height: 0; }
 .plantilla { margin: 0; padding: 0 4px 0 0; list-style: none; display: grid; gap: 6px; align-content: start; overflow-y: auto; min-height: 0; }
 .ficha { width: 100%; display: flex; align-items: center; gap: var(--s-3); padding: 6px 10px; border-radius: var(--r-md); background: var(--azul-600); border: 2px solid var(--borde-fuerte); color: #fff; text-align: left; transition: background var(--t-rapida), border-color var(--t-rapida); }
