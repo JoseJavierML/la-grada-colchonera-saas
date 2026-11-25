@@ -189,23 +189,23 @@ test('club por packs: activar el DLC da su equipo inicial una sola vez y sus con
   assert.deepEqual(club.resumenPacks(perfil).alba, { tengo: 14, total: 14, activo: true });
 });
 
-test('pantallas del club: selector de pack y contrato del Alba', async () => {
-  const { htmlPacks, htmlContratar } = await cargar('club-ui.js');
-  const html = htmlPacks('alba', { atleti: { tengo: 4, total: 36, activo: true }, alba: { tengo: 0, total: 14, activo: false } });
-  assert.match(html, /data-pack="atleti" aria-pressed="false"/);
-  assert.match(html, /data-pack="alba" aria-pressed="true"/);
-  assert.match(html, /Albacete Balompié/);
-  assert.match(html, /DLC/);
-  assert.match(html, /Sin activar/);
+test('contrato del Alba: solo salen los suyos y, sin mod, el contrato del Atleti se ve como el original', async () => {
+  const club = await cargar('club-ui.js');
+  assert.equal(club.htmlPacks, undefined, 'ya no hay selector de equipos: el DLC se activa en Ajustes → Mods');
   const base = {
     jugadores: { tomeu: {}, vallejo: {}, pacheco: {}, zozulia: {}, koke: {} }, jefesTotal: 3, fichas: 1, totalJugadores: 50,
   };
-  const alba = htmlContratar({ ...base, packs: { alba: { activo: true } } }, () => '', 'alba');
-  assert.match(alba, /Firmar un contrato en el Alba/);
-  assert.match(alba, /4<\/strong> de <strong>14<\/strong> jugadores del Alba/);
+  const alba = club.htmlContratar({ ...base, packs: { alba: { activo: true } } }, () => '', 'alba');
+  assert.match(alba, /Firmar un contrato: ¡fichaje al azar!/);
+  assert.ok(alba.includes('Tienes <strong>4</strong> de <strong>14</strong> jugadores.'));
+  assert.ok(alba.includes('lo que cada jugador fue <b>en el Alba</b>'));
   assert.doesNotMatch(alba, /Griezmann/, 'en el contrato del Alba solo salen los del Alba');
-  const sinActivar = htmlContratar({ ...base, packs: { alba: { activo: false } } }, () => '', 'alba');
-  assert.match(sinActivar, /Actívalo en el Vestuario/);
+  const atleti = club.htmlContratar({ ...base, packs: { atleti: { activo: true } } }, () => '', 'atleti');
+  assert.ok(atleti.includes('Tienes <strong>1</strong> de <strong>36</strong> jugadores.'), 'cuenta solo los del Atleti, como el original');
+  assert.ok(atleti.includes('<b>en el Atleti</b>'));
+  assert.doesNotMatch(atleti, /Alba|DLC|Zalazar/, 'sin mod no hay rastro del Alba');
+  const preparando = club.htmlContratar({ ...base, packs: { alba: { activo: false } } }, () => '', 'alba');
+  assert.match(preparando, /Ajustes → Mods/);
 });
 
 describe('API del DLC del Alba', () => {

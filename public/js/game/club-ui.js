@@ -100,29 +100,12 @@ export function htmlEntrenamiento(club, seleccionado, retrato) {
 
 const porcentaje = (p) => `${(p * 100).toFixed(1).replace('.', ',')} %`;
 
-/**
- * Selector de pack (Atleti / DLC del Alba): dos botones con los colores de cada club. `elegido` es la clave
- * del pack que se está viendo; `packs` el resumen del servidor (para enseñar cuántos tienes de cada uno).
- */
-export function htmlPacks(elegido, packs = null) {
-  return Object.values(PACKS).map((p) => {
-    const r = packs?.[p.clave];
-    const cuenta = r ? (r.activo ? `${r.tengo}/${r.total}` : 'Sin activar') : `${jugadoresDePack(p.clave).length}`;
-    return `<button type="button" class="pack-boton pack-boton--${p.clave}" data-pack="${p.clave}" aria-pressed="${elegido === p.clave}"
-      style="--pack-c:${p.colores[0]}; --pack-c2:${p.colores[1]}">
-      <span class="pack-boton__escudo" aria-hidden="true"></span>
-      <span class="pack-boton__texto"><strong>${esc(p.nombre)}</strong><small>${esc(p.apodo)} · ${cuenta}</small></span>
-      ${p.dlc ? '<b class="pack-boton__dlc">DLC</b>' : ''}
-    </button>`;
-  }).join('');
-}
-
 export function htmlContratar(club, retrato, pack = PACK_BASE) {
   const progreso = club.jefesTotal % JEFES_POR_FICHA;
   const faltan = JEFES_POR_FICHA - progreso;
   const nombrePack = PACKS[pack]?.corto ?? PACKS[PACK_BASE].corto;
   if (club.packs && !club.packs[pack]?.activo) {
-    return `<p class="panel__vacio">Todavía no has activado el <strong>DLC ${esc(PACKS[pack].nombre)}</strong>. Actívalo en el Vestuario y recibirás su equipo inicial; después podrás fichar aquí a sus jugadores.</p>`;
+    return `<p class="panel__vacio">Preparando la plantilla de <strong>${esc(PACKS[pack].nombre)}</strong>… (se activa con su mod en Ajustes → Mods).</p>`;
   }
   const probs = probabilidadesContrato({ jugadores: club.jugadores }, pack);
   const tengoPack = jugadoresDePack(pack).filter((k) => club.jugadores[k]).length;
@@ -160,11 +143,11 @@ export function htmlContratar(club, retrato, pack = PACK_BASE) {
         <span class="contrato__icono">${icono('camiseta', 44)}</span>
         <div class="contrato__texto">
           <p class="contrato__cuenta"><strong>${club.fichas}</strong> ${club.fichas === 1 ? 'ficha de contrato' : 'fichas de contrato'}</p>
-          <p class="contrato__sub">${todos ? `¡Ya tienes a todos los jugadores del ${esc(nombrePack)}!` : `${faltan === 1 ? 'Te falta <b>1</b> jefe' : `Te faltan <b>${faltan}</b> jefes`} para la siguiente`}</p>
+          <p class="contrato__sub">${todos ? '¡Ya tienes a todos los jugadores!' : `${faltan === 1 ? 'Te falta <b>1</b> jefe' : `Te faltan <b>${faltan}</b> jefes`} para la siguiente`}</p>
         </div>
         <div class="contrato__pips" role="progressbar" aria-label="Jefes hasta la siguiente ficha" aria-valuemin="0" aria-valuemax="${JEFES_POR_FICHA}" aria-valuenow="${progreso}">${pips}</div>
       </div>
-      <button type="button" class="btn btn--primario contrato__canjear" data-accion="canjear" ${club.fichas > 0 && !todos ? '' : 'disabled'}>${icono('camiseta', 20)} Firmar un contrato en el ${esc(nombrePack)}: ¡fichaje al azar!</button>
+      <button type="button" class="btn btn--primario contrato__canjear" data-accion="canjear" ${club.fichas > 0 && !todos ? '' : 'disabled'}>${icono('camiseta', 20)} Firmar un contrato: ¡fichaje al azar!</button>
       <div class="contrato__resultado" data-campo="fichado" aria-live="polite"></div>
       ${todos ? '' : `
       <h4 class="panel__subtitulo">Probabilidades del próximo fichaje</h4>
@@ -172,7 +155,7 @@ export function htmlContratar(club, retrato, pack = PACK_BASE) {
       <div class="reparto" aria-hidden="true">${tramos}</div>
       <ul class="rareza-tarjetas">${tarjetas}</ul>
       <details class="contrato__detalle"><summary>Ver jugador a jugador (${probs.length} por fichar)</summary><ul class="prob-jugadores">${detalle}</ul></details>`}
-      <p class="entrena__nota">Tienes <strong>${tengoPack}</strong> de <strong>${totalPack}</strong> jugadores del ${esc(nombrePack)} (${Object.keys(club.jugadores).length} de ${club.totalJugadores} en total).</p>
+      <p class="entrena__nota">Tienes <strong>${tengoPack}</strong> de <strong>${totalPack}</strong> jugadores.</p>
     </div>`;
 }
 
